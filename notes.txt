@@ -1,0 +1,280 @@
+hospital management:
+
+backend:
+1
+terminal -> npm init
+npm i bcrypt , cloudinary , cookie-parse , cors , dotenv , express, mongoose , express-fileupload , jsonwebtoken , validator
+
+2
+packege.json-> inside scripts add 
+ "main": "index.js",
+  "type": "module",--added
+  "scripts": {
+    "start": "node server.js", --added 
+    "dev": "nodemon server.js" --added
+  },
+3
+app.js
+
+4
+server.js
+
+5
+config folder--save all the secrets
+mongodb setup 
+make change to config.env file 
+add all the necessary packages in config 
+
+6
+create db.js
+
+
+7
+connecting mongodb atlas with the nodejs create a new project inside the cluster then add that to dbconnections.js
+
+8
+connecting cloudinary and setup in the server.js
+
+9
+setup for message models  models-messageschema.js (mention all the values and validation and export)
+controller- messagecontroller import messagemodel- if success-condition else-condition
+router-messagerouter- import controller specify post method 
+app - app.use (path api/v1/message/)
+try {
+     sending data false data -fill the details correct-error 
+     true data will be stored in the database mongodb atlas browse connection 
+	 }
+create middleware to resolve the error - catchasyncerror
+                                       - error middleware to cach the specific error and throw that error if any of the field is not filled
+                                         we specified many possible error and handling those error where the controll.js had to be modified 
+										 and app.js 
+										 
+										 
+10 
+set up for userschema  model - userschema.js allows user to use only one email cant losig with the same email again and password encryption is doent
+usercontroller.js  handling error
+userrouter.js handling the paths
+manipulate in app.js
+create the controller for login check if the user is unique , password and confirmpassword is correct ,role is valid,if user
+ logged in successfully 
+ 
+11
+while loggining in -----
+cookie generation-user authentication (imp)
+utils - jwttoken.js - generate admintoken for admin and patient token for patient  mention cokkie expire date 
+update the usercontroler.js
+ request---{
+  "email":"suva33@gmail.com",
+  "password":"12347756",
+  "confirmpassword":"12347756",
+  "role":"Patient"
+}
+response--"success": true,
+  "message": "User Logged In Successfully!",
+  "user": {
+    "_id": "66658a86868d8c9748391f23",
+    "firstName": "sowmya",
+    "lastName": "suvar",
+    "email": "suva33@gmail.com",
+    "phone": "1234567891",
+    "nic": "12345",
+    "dob": "2003-01-07T18:30:00.000Z",
+    "gender": "Female",
+    "password": "$2b$10$sHs.yPrfW7.dKeHDWJFUn.B3fIfW1WXa5vnVDw.d5RoG8ku567Pby",
+    "role": "Patient",
+    "__v": 0
+	}
+cookie--
+patienttoken------eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2NjU4YTg2ODY4ZDhjOTc0ODM5MWY
+                  yMyIsImlhdCI6MTcxNzkzNTMzOSwiZXhwIjoxNzE4NTQwMTM5fQ.wPVrKB7c1nv2Ue5uDgfTgCNZ56uDUA6pPYqhzFauPVs
+				
+
+
+for admin 
+
+usercontroller.js checks if admin is already registered ot not and add new register 
+{
+  "email":"adminsowmya@gmail.com",
+        "password":"12347756",
+        "confirmpassword":"12347756",
+        "role":"Admin"
+}
+{
+  "success": true,
+  "message": "User Logged In Successfully!",
+  "user": {
+    "_id": "6665a25d89f74d9122082107",
+    "firstName": "adminsowmya",
+    "lastName": "suvar",
+    "email": "adminsowmya@gmail.com",
+    "phone": "1234567891",
+    "nic": "12345",
+    "dob": "2003-01-07T18:30:00.000Z",
+    "gender": "Female",
+    "password": "$2b$10$gOTJb9t.KzYDlHVS6QcNx.B3BmIoPv8pECdd/UgSD5XDQpVrb5tMK",
+    "role": "Admin",
+    "__v": 0
+  },
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2NjVhMjVkODlmNzRkOTEyMjA4MjEwNyIsImlhdCI6MTcxNzkzNjk1NiwiZXhwIjoxNzE4NTQxNzU2fQ.-F-bXVGO6fSnfuC5jhjTETnLMXd4OPD_Fq_9wQOAR1M"
+}
+admintoken-----eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ
+pZCI6IjY2NjVhMjVkODlmNzRkOTEyMjA4MjEwNyIsImlhdCI6MTcxNzkzNjk1NiwiZXhwIjoxNzE4NTQxNzU2fQ.-F-bXVGO6fSnfuC5jhjTETnLMXd4OPD_Fq_9wQOAR1M
+
+
+12
+admin authentication middleware auth.js   here authentication + authorization is done => based on the token generated if the token not generated then not authenticated 
+so whenever the new admin is added then he should be authenticated ----->patient and admin
+because the admin can be added only by the admin 
+
+get all the doctors who are registered 
+get user details who are registerd
+get the admindetails with authentication 
+
+patient,admin log in logout then the token will be removed for the respective logout 
+
+
+
+13
+cloudinary actual set up add new doctors with the avatar to the cloudinary db along with the details 
+In the mongodb the doctor details withe the image url is setup
+then the admin will be allowed to get all the details of the doctor
+
+
+14
+appointment schema is setup where the patient can make appointments at the required time 
+and the admin can upadate the data either pending / accepted / regected 
+
+appointment-controller.js
+the user can post the appointments based on the required doctor  
+setup if the conflict between the doctors name can happen so always give the unique dctors name 
+
+
+get all the appointments with the assigned unique message 
+update the appointment status  check if that appointmnet is made then
+find that appointment with the id we can update the status but only the admin can do it
+
+
+delete the appointment find it by the id then the database will also be updated 
+
+appointmentRouter.js
+setup routs for post/get/update/delete the appointment
+
+make specified changes in the app.js 
+
+-----------------------------------------------------------------------------------------------------------------
+fromtend:
+1
+npm create vite@latest ./    ---- select framework React ----- variant javascript ----- npm install 
+npm i axios react-icons react-multi-carousel react-router-dom react-toastify
+npm run dev
+
+
+axios-requests send 
+react icons 
+slider - multi carousel
+navigate from one page to another - router dom
+alert messages - react-toastify
+
+github :-https://github.com/Zeeshu911/MERN-Stack-Hospital-Management-System-Web-Application/blob/main/frontend/src/App.css
+
+app.css set up 
+remove assets and index.css
+setup App.jsx -rempve all and import rfce
+
+changes to the main.jsx
+
+
+2
+app.jsx add router - routes - route to all the files in the pages folder--save
+pages-home,appointment,register,aboutUs,login add all the renders to the route
+
+import the paths as well 
+
+3
+setup for toastify in app.jsx
+
+4
+create the components in the home.jsx 
+pics in public folder 
+create components folder and create .jsx files
+render these component files in the home.jsx
+5
+setup hero.jsx
+setup biography.jsx
+setup departments.jsx
+setup Messageform.jsx--setup axios to connect to the backend 
+run the backend connect to the datbase 
+
+6
+set up for navbar.jsx
+update the app.jsx
+
+7
+setup of the login.jsx 
+setup register.jsx
+setup aboutUs.jsx
+setup Appointment.jsx
+setup ApointmentForm.jsx
+setup Footer.jsx
+
+
+---------------------------------------------------------------
+Dashboard:
+
+
+npm create vite@latest ./    ---- select framework React ----- variant javascript ----- npm install 
+npm i axios react-icons react-router-dom react-toastify
+npm run dev
+
+setup main.jsx 
+setup the app.jsx with the necessary routes
+the navbar will appear only if the admin is authenticated
+otherwise he will not be allowed to see anything
+
+setup sidebar.jsx which will help in navigation
+setup AddNewAdmin.jsx 
+AddnewDoctor.jsx
+Dashboard.jsx
+Doctors.jsx
+Login.jsx
+messages.jsx
+
+
+
+
+______________________________________________________________________________________________________
+
+deployment:
+using render.com deploy the backend -add all the environmental variable - build  
+(jws add secure:true,sameSite:"None"
+make changes in the config 
+git ignore -upload baackend)
+
+replace this url in frontend/dashboard 
+http://localhost:4320
+with
+https://hospital-management-backend-rv8x.onrender.com
+
+npm run build
+
+render-backend
+yt:https://www.youtube.com/watch?v=RBeQaVA1lxM
+vercel-frontend
+yt:https://www.youtube.com/watch?v=AVOrmKA4FyU
+
+
+vercel-frontend:
+open directory 
+vercel 
+anwer:all the questions
+
+dash:https://hoapitalmanagementsystem-91wwvtylp-manaswis-projects.vercel.app
+front:https://hospitalmanagementfront-54s3gkqfq-manaswis-projects.vercel.app
+
+
+
+
+
+
+
+ 
